@@ -1,0 +1,9 @@
+Cloud Composer - Airflow DAG basics
+    DAG (Directed Acyclic Graph)
+
+    1) Import dependent Python libraties used in DAG
+    2) Default Argument definitions
+    3) Custom Python logic/Functionality (optional)
+    4) Define DAG by instantiating the object by passing necessary arguments like DAG name, schedule etc.
+    5) Define Tasks using appropriate AirFlow Operators
+    6) Define Tasks dependencies by using AirFlow specific notations
