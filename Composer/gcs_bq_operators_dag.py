@@ -62,5 +62,5 @@ with DAG(dag_id='GCS_to_BQ_and_AGG',
         dag=dag
     )
 
-    # Setting up task dependency
+    # Setting up task dependency -- Flow of task execution
     start >> gcs_to_bq_load >> create_aggr_bg_table >> end
