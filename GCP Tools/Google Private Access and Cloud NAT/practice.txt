@@ -1,1 +1,2 @@
 Create a GCE instance with external IP set to None.
+Steps to create instance:
