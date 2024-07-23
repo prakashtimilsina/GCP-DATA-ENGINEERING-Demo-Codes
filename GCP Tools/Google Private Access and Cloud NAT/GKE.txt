@@ -1,3 +1,5 @@
 GKE -- For running a web application in Contanarized pod.
     Environment Setup
         self-paced Environment Setup
+    Storage Setup
+    
