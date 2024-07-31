@@ -3,3 +3,6 @@ GKE -- For running a web application in Contanarized pod.
         self-paced Environment Setup
     Storage Setup
     AirFlow
+    CloudRun
+    BigTable
+    BigQuery
