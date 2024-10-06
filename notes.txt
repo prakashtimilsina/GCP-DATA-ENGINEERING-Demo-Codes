@@ -1,0 +1,9 @@
+Q) What are the relational options on GCP?
+And Why would I choose one over the other?
+##:
+
+Relational :
+    Alloy DB for PostgreSQL:
+    Cloud SQL: Fully managed MySQL, PostgreSQL, and SQL Server. CRM, ERP, Ecommerce and web, and SaaS application
+    Spanner: unlimited global scale. Gaming, Retail, Global Financial Ledger, Supply Chain/Inventory Management
+    Bare Metal Solution for Oracle:
