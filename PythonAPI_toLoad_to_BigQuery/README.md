@@ -1,0 +1,1 @@
+## Using Django Rest Framework with YAML Configuration to load the json data into BIG Query
