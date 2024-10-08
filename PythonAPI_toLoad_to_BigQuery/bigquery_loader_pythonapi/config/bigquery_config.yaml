@@ -1,0 +1,48 @@
+# config/bigquery_config.yaml
+
+default:
+  dataset_id: "Your default dataset_id"
+  table_id: "Your default table_id"
+  schema: 
+    - name: name
+      type: STRING
+      mode: REQUIRED
+    - name: age
+      type: INTEGER
+      mode: REQUIRED
+    - name: email
+      type: STRING
+      mode: REQUIRED
+
+tables:
+  users:
+    dataset_id: "test_dataset"
+    table_id: "users"
+    schema:
+      - name: name
+        type: STRING
+        mode: REQUIRED
+      - name: age
+        type: INTEGER
+        mode: REQUIRED
+      - name: email
+        type: STRING
+        mode: REQUIRED
+
+  products:
+    dataset_id: "test_dataset"
+    table_id: "products"
+    schema:
+      - name: product_id
+        type: STRING
+        mode: REQUIRED
+      - name: name
+        type: STRING
+        mode: REQUIRED
+      - name: age
+        type: INTEGER
+        mode: REQUIRED
+      - name: email
+        type: STRING
+        mode: REQUIRED
+      
