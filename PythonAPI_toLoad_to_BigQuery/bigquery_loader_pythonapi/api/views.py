@@ -18,6 +18,7 @@ client = bigquery.Client()
 DATASET_ID = 'test_dataset' # 'your_dataset_id'
 TABLE_ID =  'test_table1' #your_table_id
 TABLE_REF = f"{client.project}.{DATASET_ID}.{TABLE_ID}"
+# gcp-dataeng-demos-432703.test_dataset.test_table1
 
 def home(request):
     return render(request, 'api/home.html')
@@ -28,9 +29,12 @@ def load_json(request):
 class LoadJsonView(APIView):
     def post(self, request, format=None):
         serializer = DataBatchSerializer(data=request.data)
+        print(f"serializer: {serializer}")
         if serializer.is_valid():
             records = serializer.validated_data.get('records', [])
+            print(f"records {records}")
             rows_to_insert = [record for record in records]
+            print(f" rows to insert: {rows_to_insert}")
 
             try:
                 # Retrieve the table
