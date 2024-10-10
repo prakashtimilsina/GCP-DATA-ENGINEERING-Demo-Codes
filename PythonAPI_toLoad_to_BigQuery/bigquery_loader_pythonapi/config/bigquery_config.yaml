@@ -1,8 +1,8 @@
 # config/bigquery_config.yaml
 
 default:
-  dataset_id: "Your default dataset_id"
-  table_id: "Your default table_id"
+  dataset_id: "test_dataset"
+  table_id: "Default_table1_id"
   schema: 
     - name: name
       type: STRING
