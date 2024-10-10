@@ -127,3 +127,28 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ## Json 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/Users/prakashtimilsina/Documents/Learning/GCP/GCP-DATA-ENGINEERING-Demo-Codes/PythonAPI_toLoad_to_BigQuery/service_account.json"
+
+## Logging Configuration
+# bigquery_loader/settings.py
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'debug.log'),
+        },
+    },
+    'loggers': {
+        'api': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

@@ -5,13 +5,13 @@ default:
   table_id: "Default_table1_id"
   schema: 
     - name: name
-      type: STRING
+      field_type: STRING
       mode: REQUIRED
     - name: age
-      type: INTEGER
+      field_type: INTEGER
       mode: REQUIRED
     - name: email
-      type: STRING
+      field_type: STRING
       mode: REQUIRED
 
 tables:
@@ -20,13 +20,13 @@ tables:
     table_id: "users"
     schema:
       - name: name
-        type: STRING
+        field_type: STRING
         mode: REQUIRED
       - name: age
-        type: INTEGER
+        field_type: INTEGER
         mode: REQUIRED
       - name: email
-        type: STRING
+        field_type: STRING
         mode: REQUIRED
 
   products:
@@ -34,15 +34,15 @@ tables:
     table_id: "products"
     schema:
       - name: product_id
-        type: STRING
+        field_type: STRING
         mode: REQUIRED
       - name: name
-        type: STRING
+        field_type: STRING
         mode: REQUIRED
       - name: age
-        type: INTEGER
+        field_type: INTEGER
         mode: REQUIRED
       - name: email
-        type: STRING
+        field_type: STRING
         mode: REQUIRED
       

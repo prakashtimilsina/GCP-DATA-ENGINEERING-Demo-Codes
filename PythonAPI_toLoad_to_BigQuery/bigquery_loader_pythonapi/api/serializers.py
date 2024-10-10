@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .utils import BigQueryConfig
 
 class DynamicDataItemSerializer(serializers.Serializer):
-    def __iint__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         table_name = kwargs.pop('table_name', None)
         super(DynamicDataItemSerializer, self).__init__(*args, **kwargs)
 
@@ -12,8 +12,8 @@ class DynamicDataItemSerializer(serializers.Serializer):
 
         for field in schema:
             field_name = field['name']
-            field_type = field['type']
-            field_mode = field['mode']
+            field_type = field['field_type']
+            field_mode = field.get('mode', 'NULLABLE')
 
             # Map BigQuery types to DRF serializer fields
             if field_type == 'STRING':
@@ -31,13 +31,24 @@ class DynamicDataItemSerializer(serializers.Serializer):
 
 class DataBatchSerializer(serializers.Serializer):
     table_name = serializers.CharField(max_length=100, required=False)
-    records = serializers.ListField(
-        child=DynamicDataItemSerializer()
-    )
-    def __init__(self, *args, **kwargs):
-        table_name = kwargs['data'].get('table_name') if 'data' in kwargs and kwargs['data'] else None
-        super(DataBatchSerializer, self).__init__(*args, **kwargs)
-        self.fields['records'].child = DynamicDataItemSerializer(table_name=table_name)
+    records = serializers.ListField()
+
+    def to_internal_value(self, data):
+        table_name = data.get('table_name', None)
+        records = data.get('records', [])
+        if not isinstance(records, list):
+            raise serializers.ValidationError({"records": "This field must be a list."})
+        
+        # Initialize the DynamicDataItemSerializer with the table_name
+        child_serializer = DynamicDataItemSerializer(table_name=table_name, many=True)
+        validated_records = child_serializer.run_validation(records)
+
+        return {
+            'table_naeme' : table_name,
+            'records': validated_records
+        }
+    
+    
 
 '''
 Static Single serializer 
