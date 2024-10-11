@@ -35,18 +35,24 @@ def load_json(request):
 class LoadJsonView(APIView):
     def post(self, request, format=None):
         serializer = DataBatchSerializer(data=request.data)
-        logger.info(f"serializer: {serializer}")
+        logger.info(f"serializer:- {serializer}")
+        logger.info(f"serializer validating...")
         if serializer.is_valid():
+            logger.info(f"serializer is validated")
             records = serializer.validated_data.get('records', [])
             table_name = serializer.validated_data.get('table_name')
-            logger.info(f"records {records} \ntable name {table_name}")
+            logger.info(f"Records:- {records} \nTable Name:- {table_name}")
             rows_to_insert = [record for record in records]
-            logger.info(f" rows to insert: {rows_to_insert}")
+            logger.info(f"Rows to insert:- {rows_to_insert}")
 
             # Retrieve table configuration from YAML
             try:
+                logging.debug(f"get_table_config is being called...")
                 table_config = BigQueryConfig.get_table_config(table_name)
+                logging.debug(f"get_table_config is successfully called...")
+                logging.debug(f"table_config value calling from view.py:- {table_config}")
             except KeyError as e:
+                logger.error(f"Configuration error: {str(e)}")
                 return Response(
                     {"error": str(e)},
                     status=status.HTTP_400_BAD_REQUEST
@@ -64,20 +70,29 @@ class LoadJsonView(APIView):
 
             # Check if 'dataset_id' and 'table_id' are present.
             if not dataset_id or not table_id:
+                logger.error(f"'dataset_id' or 'table_id' is missing for table '{table_name}' ")
                 return Response(
                     {"error": "'dataset_id' or 'table_id' is missing in the configuration."},
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
 
             # Initializing BigQuery Client
-            client = bigquery.Client()
-            print(f"!!CLIENT!! {client}")
+            try:
+                client = bigquery.Client()
+                logger.debug(f"Initialized Bigquery client")
+            except Exception as e:
+                logger.error(f"Failed to initialize BigQuery client: {str(e)} ")
+                return Response(
+                    {"error": f"Failed to initialize BigQuery client: {str(e)}"},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+            
             # Check if the table exists
             if not BigQueryConfig.table_exists(client, dataset_id, table_id):
                 # convert schema from YAML to BigQuery SchemaFields objects
-                schema = [SchemaField(name=field['name'], field_type=field['field_type'], mode=field.get('mode', 'NULLABLE')) for field in schema_config]
+                # schema = [SchemaField(name=field['name'], field_type=field['field_type'], mode=field.get('mode', 'NULLABLE')) for field in schema_config]
                 try: 
-                    BigQueryConfig.create_table(client, dataset_id, table_id, schema)
+                    BigQueryConfig.create_table(client, dataset_id, table_id, schema_config)
                 
                 except GoogleAPIError as e:
                     logger.error(f"Failed to create table: {e.message}")
@@ -93,14 +108,16 @@ class LoadJsonView(APIView):
                     )
                 
             table_ref = client.dataset(dataset_id).table(table_id)
-            print(f"table_ref : {table_ref}")
+            logger.info(f"table_ref : {table_ref}")
 
             try:
                     # Retrieve the table (now guaranteed to exist)
                     table = client.get_table(table_ref) # API Request
+                    logger.debug(f"Retrieved table: {table_ref}")
 
                     # Insert data
                     errors = client.insert_rows_json(table, rows_to_insert) # API Request
+                    logger.debug(f"Inserting rows: {rows_to_insert}")
 
                     if errors:
                         # Format errors for better readability
@@ -110,9 +127,9 @@ class LoadJsonView(APIView):
                             {"errors": error_messages},
                             status=status.HTTP_400_BAD_REQUEST
                         )
-                    logger.info(f"Data loaded successfully into {dataset_id}.{table_id}")
+                    logger.info(f"Data loaded successfully into {table_ref}")
                     return Response(
-                        {"message": "Data loaded successfully!"}, 
+                        {"message": f"Data loaded successfully into {table_ref}"}, 
                         status=status.HTTP_201_CREATED
                         )
                 

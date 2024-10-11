@@ -1,0 +1,113 @@
+1) Load with default table:
+
+curl -X POST "http://127.0.0.1:8000/api/load-json/" \
+-H "Content-Type: application/json" \
+-d '{
+      "records": [
+          {
+              "name": "Alice Johnson",
+              "age": 28,
+              "email": "alice.johnson@example.com"
+          },
+          {
+              "name": "Bob Smith",
+              "age": 35,
+              "email": "bob.smith@example.com"
+          }
+      ]
+    }'
+
+2) Load with specific table i.e. users
+curl -X POST "http://127.0.0.1:8000/api/load-json/" \
+-H "Content-Type: application/json" \
+-d '{
+      "table_name": "users",
+      "records": [
+          {
+              "name": "Charlie Brown",
+              "age": 30,
+              "email": "charlie.brown@example.com"
+          }
+      ]
+    }'
+
+3) Load specific table i.e. products
+curl -X POST "http://127.0.0.1:8000/api/load-json/" \
+-H "Content-Type: application/json" \
+-d '{
+      "table_name": "products",
+      "records": [
+          {
+              "product_id": "P12345",
+              "name": "Wireless Mouse",
+              "price": 29.99,
+              "in_stock": true
+          },
+          {
+              "product_id": "P67890",
+              "name": "Mechanical Keyboard",
+              "price": 79.99,
+              "in_stock": false
+          }
+      ]
+    }'
+
+4) Missing Fields:
+curl -X POST "http://127.0.0.1:8000/api/load-json/" \
+-H "Content-Type: application/json" \
+-d '{
+      "table_name": "products",
+      "records": [
+          {
+              "product_id": "P54321",
+              "name": "Gaming Headset",
+              "price": 59.99
+              // Missing "in_stock" which is nullable, should be okay
+          }
+      ]
+    }'
+
+Expected result: Data should be loaded without issues.
+
+5) Missing Fields:
+curl -X POST "http://127.0.0.1:8000/api/load-json/" \
+-H "Content-Type: application/json" \
+-d '{
+      "table_name": "products",
+      "records": [
+          {
+              "product_id": "P98765",
+              "price": 49.99,
+              "in_stock": true
+          }
+      ]
+    }'
+
+Expected Result:
+    {
+  "errors": {
+    "name": "This field is required."
+  }
+}
+
+6) Incorrect Table Names/Schema
+curl -X POST "http://127.0.0.1:8000/api/load-json/" \
+-H "Content-Type: application/json" \
+-d '{
+      "table_name": "orders",
+      "records": [
+          {
+              "order_id": "O12345",
+              "product_id": "P12345",
+              "quantity": 2,
+              "price": 59.98
+          }
+      ]
+    }'
+
+Expected Result: 
+    {
+  "error": "'table_id' is missing in the configuration for table 'orders'"
+}
+
+==================================

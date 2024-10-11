@@ -1,6 +1,9 @@
 #api/serializers.py
 from rest_framework import serializers
 from .utils import BigQueryConfig
+import logging
+
+logger = logging.getLogger(__name__)
 
 class DynamicDataItemSerializer(serializers.Serializer):
     def __init__(self, *args, **kwargs):
@@ -26,6 +29,9 @@ class DynamicDataItemSerializer(serializers.Serializer):
                 self.fields[field_name] = serializers.BooleanField(required=(field_mode != 'NULLABLE'))
             elif field_type == 'TIMESTAMP':
                 self.fields[field_name] = serializers.DateTimeField(required=(field_mode != 'NULLABLE'))
+            else: 
+                # Handled unsupported types or default to CharField
+                self.fields[field_name] = serializers.CharField(required=(field_mode != 'NULLABLE'))
             # Add more as needed.
 
 
@@ -42,9 +48,11 @@ class DataBatchSerializer(serializers.Serializer):
         # Initialize the DynamicDataItemSerializer with the table_name
         child_serializer = DynamicDataItemSerializer(table_name=table_name, many=True)
         validated_records = child_serializer.run_validation(records)
+        logger.debug(f"Table Name from DataBatchSerializer function:- {table_name}")
+        logger.debug(f"Records from DataBatchSerializer function:- {validated_records}")
 
         return {
-            'table_naeme' : table_name,
+            'table_name' : table_name,
             'records': validated_records
         }
     

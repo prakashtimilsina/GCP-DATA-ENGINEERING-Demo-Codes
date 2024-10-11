@@ -2,8 +2,8 @@
 
 default:
   dataset_id: "test_dataset"
-  table_id: "Default_table1_id"
-  schema: 
+  table_id: "default_table"
+  schema:
     - name: name
       field_type: STRING
       mode: REQUIRED
@@ -17,7 +17,7 @@ default:
 tables:
   users:
     dataset_id: "test_dataset"
-    table_id: "users"
+    table_id: "users_table"
     schema:
       - name: name
         field_type: STRING
@@ -31,7 +31,7 @@ tables:
 
   products:
     dataset_id: "test_dataset"
-    table_id: "products"
+    table_id: "products_table"
     schema:
       - name: product_id
         field_type: STRING
@@ -39,10 +39,9 @@ tables:
       - name: name
         field_type: STRING
         mode: REQUIRED
-      - name: age
-        field_type: INTEGER
+      - name: price
+        field_type: FLOAT
         mode: REQUIRED
-      - name: email
-        field_type: STRING
-        mode: REQUIRED
-      
+      - name: in_stock
+        field_type: BOOLEAN
+        mode: NULLABLE
