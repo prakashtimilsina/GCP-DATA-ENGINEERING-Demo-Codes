@@ -79,7 +79,7 @@ class LoadJsonView(APIView):
             # Initializing BigQuery Client
             try:
                 client = bigquery.Client()
-                logger.debug(f"Initialized Bigquery client")
+                logger.info(f"Initialized Bigquery client")
             except Exception as e:
                 logger.error(f"Failed to initialize BigQuery client: {str(e)} ")
                 return Response(
