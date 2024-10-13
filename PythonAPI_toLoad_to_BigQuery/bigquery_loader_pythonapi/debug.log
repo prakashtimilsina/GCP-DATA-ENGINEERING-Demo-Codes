@@ -302,3 +302,76 @@ table_ref : gcp-dataeng-demos-432703.test_dataset.default_table
 Retrieved table: gcp-dataeng-demos-432703.test_dataset.default_table
 Inserting rows: [{'name': 'Charlie Brown', 'age': 30, 'email': 'charlie.brown@example.com'}]
 Data loaded successfully into gcp-dataeng-demos-432703.test_dataset.default_table
+serializer:- DataBatchSerializer(data={'records': [{'name': 'Alice Johnson', 'age': 28, 'email': 'alice.johnson@example.com'}, {'name': 'Bob Smith', 'age': 35, 'email': 'bob.smith@example.com'}]}):
+    table_name = CharField(max_length=100, required=False)
+    records = ListField()
+serializer validating...
+Resolving table config: {'default': {'dataset_id': 'test_dataset', 'table_id': 'default_table', 'schema': [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]}, 'tables': {'users': {'dataset_id': 'test_dataset', 'table_id': 'users_table', 'schema': [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]}, 'products': {'dataset_id': 'test_dataset', 'table_id': 'products_table', 'schema': [{'name': 'product_id', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'price', 'field_type': 'FLOAT', 'mode': 'REQUIRED'}, {'name': 'in_stock', 'field_type': 'BOOLEAN', 'mode': 'NULLABLE'}]}}}
+Retrieved default table config: {'dataset_id': 'test_dataset', 'table_id': 'default_table', 'schema': [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]} 
+Table Name from DataBatchSerializer function:- None
+Records from DataBatchSerializer function:- [{'name': 'Alice Johnson', 'age': 28, 'email': 'alice.johnson@example.com'}, {'name': 'Bob Smith', 'age': 35, 'email': 'bob.smith@example.com'}]
+serializer is validated
+Records:- [{'name': 'Alice Johnson', 'age': 28, 'email': 'alice.johnson@example.com'}, {'name': 'Bob Smith', 'age': 35, 'email': 'bob.smith@example.com'}] 
+Table Name:- None
+Rows to insert:- [{'name': 'Alice Johnson', 'age': 28, 'email': 'alice.johnson@example.com'}, {'name': 'Bob Smith', 'age': 35, 'email': 'bob.smith@example.com'}]
+Resolving table config: {'default': {'dataset_id': 'test_dataset', 'table_id': 'default_table', 'schema': [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]}, 'tables': {'users': {'dataset_id': 'test_dataset', 'table_id': 'users_table', 'schema': [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]}, 'products': {'dataset_id': 'test_dataset', 'table_id': 'products_table', 'schema': [{'name': 'product_id', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'price', 'field_type': 'FLOAT', 'mode': 'REQUIRED'}, {'name': 'in_stock', 'field_type': 'BOOLEAN', 'mode': 'NULLABLE'}]}}}
+Retrieved default table config: {'dataset_id': 'test_dataset', 'table_id': 'default_table', 'schema': [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]} 
+Table Name: None
+Dataset ID: test_dataset
+Table ID: default_table
+Schema Config: [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]
+Initialized Bigquery client
+Table 'test_dataset.default_table' does not exist.
+Converted schema fields: [SchemaField('name', 'STRING', 'REQUIRED', None, None, (), None), SchemaField('age', 'INTEGER', 'REQUIRED', None, None, (), None), SchemaField('email', 'STRING', 'REQUIRED', None, None, (), None)]
+Table test_dataset.default_table is created at BigQuery!
+table_ref : gcp-dataeng-demos-432703.test_dataset.default_table
+Retrieved table: gcp-dataeng-demos-432703.test_dataset.default_table
+BigQuery API error: POST https://bigquery.googleapis.com/bigquery/v2/projects/gcp-dataeng-demos-432703/datasets/test_dataset/tables/default_table/insertAll?prettyPrint=false: Table 175303212241:test_dataset.default_table not found.
+serializer:- DataBatchSerializer(data={'records': [{'name': 'Alice Johnson', 'age': 28, 'email': 'alice.johnson@example.com'}, {'name': 'Bob Smith', 'age': 35, 'email': 'bob.smith@example.com'}]}):
+    table_name = CharField(max_length=100, required=False)
+    records = ListField()
+serializer validating...
+Resolving table config: {'default': {'dataset_id': 'test_dataset', 'table_id': 'default_table', 'schema': [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]}, 'tables': {'users': {'dataset_id': 'test_dataset', 'table_id': 'users_table', 'schema': [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]}, 'products': {'dataset_id': 'test_dataset', 'table_id': 'products_table', 'schema': [{'name': 'product_id', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'price', 'field_type': 'FLOAT', 'mode': 'REQUIRED'}, {'name': 'in_stock', 'field_type': 'BOOLEAN', 'mode': 'NULLABLE'}]}}}
+Retrieved default table config: {'dataset_id': 'test_dataset', 'table_id': 'default_table', 'schema': [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]} 
+Table Name from DataBatchSerializer function:- None
+Records from DataBatchSerializer function:- [{'name': 'Alice Johnson', 'age': 28, 'email': 'alice.johnson@example.com'}, {'name': 'Bob Smith', 'age': 35, 'email': 'bob.smith@example.com'}]
+serializer is validated
+Records:- [{'name': 'Alice Johnson', 'age': 28, 'email': 'alice.johnson@example.com'}, {'name': 'Bob Smith', 'age': 35, 'email': 'bob.smith@example.com'}] 
+Table Name:- None
+Rows to insert:- [{'name': 'Alice Johnson', 'age': 28, 'email': 'alice.johnson@example.com'}, {'name': 'Bob Smith', 'age': 35, 'email': 'bob.smith@example.com'}]
+Resolving table config: {'default': {'dataset_id': 'test_dataset', 'table_id': 'default_table', 'schema': [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]}, 'tables': {'users': {'dataset_id': 'test_dataset', 'table_id': 'users_table', 'schema': [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]}, 'products': {'dataset_id': 'test_dataset', 'table_id': 'products_table', 'schema': [{'name': 'product_id', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'price', 'field_type': 'FLOAT', 'mode': 'REQUIRED'}, {'name': 'in_stock', 'field_type': 'BOOLEAN', 'mode': 'NULLABLE'}]}}}
+Retrieved default table config: {'dataset_id': 'test_dataset', 'table_id': 'default_table', 'schema': [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]} 
+Table Name: None
+Dataset ID: test_dataset
+Table ID: default_table
+Schema Config: [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]
+Initialized Bigquery client
+Table 'test_dataset.default_table' exists.
+table_ref : gcp-dataeng-demos-432703.test_dataset.default_table
+Retrieved table: gcp-dataeng-demos-432703.test_dataset.default_table
+Inserting rows: [{'name': 'Alice Johnson', 'age': 28, 'email': 'alice.johnson@example.com'}, {'name': 'Bob Smith', 'age': 35, 'email': 'bob.smith@example.com'}]
+Data loaded successfully into gcp-dataeng-demos-432703.test_dataset.default_table
+serializer:- DataBatchSerializer(data={'table_name': 'users', 'records': [{'name': 'Charlie Brown', 'age': 30, 'email': 'charlie.brown@example.com'}]}):
+    table_name = CharField(max_length=100, required=False)
+    records = ListField()
+serializer validating...
+Resolving table config: {'default': {'dataset_id': 'test_dataset', 'table_id': 'default_table', 'schema': [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]}, 'tables': {'users': {'dataset_id': 'test_dataset', 'table_id': 'users_table', 'schema': [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]}, 'products': {'dataset_id': 'test_dataset', 'table_id': 'products_table', 'schema': [{'name': 'product_id', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'price', 'field_type': 'FLOAT', 'mode': 'REQUIRED'}, {'name': 'in_stock', 'field_type': 'BOOLEAN', 'mode': 'NULLABLE'}]}}}
+Retrieved default table config: {'dataset_id': 'test_dataset', 'table_id': 'default_table', 'schema': [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]} 
+Table Name from DataBatchSerializer function:- users
+Records from DataBatchSerializer function:- [{'name': 'Charlie Brown', 'age': 30, 'email': 'charlie.brown@example.com'}]
+serializer is validated
+Records:- [{'name': 'Charlie Brown', 'age': 30, 'email': 'charlie.brown@example.com'}] 
+Table Name:- users
+Rows to insert:- [{'name': 'Charlie Brown', 'age': 30, 'email': 'charlie.brown@example.com'}]
+Resolving table config: {'default': {'dataset_id': 'test_dataset', 'table_id': 'default_table', 'schema': [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]}, 'tables': {'users': {'dataset_id': 'test_dataset', 'table_id': 'users_table', 'schema': [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]}, 'products': {'dataset_id': 'test_dataset', 'table_id': 'products_table', 'schema': [{'name': 'product_id', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'price', 'field_type': 'FLOAT', 'mode': 'REQUIRED'}, {'name': 'in_stock', 'field_type': 'BOOLEAN', 'mode': 'NULLABLE'}]}}}
+Retrieved default table config: {'dataset_id': 'test_dataset', 'table_id': 'default_table', 'schema': [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]} 
+Table Name: users
+Dataset ID: test_dataset
+Table ID: default_table
+Schema Config: [{'name': 'name', 'field_type': 'STRING', 'mode': 'REQUIRED'}, {'name': 'age', 'field_type': 'INTEGER', 'mode': 'REQUIRED'}, {'name': 'email', 'field_type': 'STRING', 'mode': 'REQUIRED'}]
+Initialized Bigquery client
+Table 'test_dataset.default_table' exists.
+table_ref : gcp-dataeng-demos-432703.test_dataset.default_table
+Retrieved table: gcp-dataeng-demos-432703.test_dataset.default_table
+Inserting rows: [{'name': 'Charlie Brown', 'age': 30, 'email': 'charlie.brown@example.com'}]
+Data loaded successfully into gcp-dataeng-demos-432703.test_dataset.default_table
