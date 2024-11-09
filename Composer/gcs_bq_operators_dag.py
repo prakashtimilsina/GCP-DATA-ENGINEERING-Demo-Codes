@@ -15,7 +15,7 @@ default_arg = {
     'email_on_failure' : False,
     'email_on_retry' : False,
     'retries' : 1,
-    'retry_delay' : timedelta(minutes=5)
+    'retry_delay' : timedelta(minutes=5) # 5 mins delay to retry.
 }
 
 
@@ -62,5 +62,5 @@ with DAG(dag_id='GCS_to_BQ_and_AGG',
         dag=dag
     )
 
-    # Setting up task dependency -- Flow of task execution
+    # Setting up task dependency -- Flow of task execution 
     start >> gcs_to_bq_load >> create_aggr_bg_table >> end
