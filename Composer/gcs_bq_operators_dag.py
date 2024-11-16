@@ -13,7 +13,7 @@ yesterday = datetime.combine(datetime.today() - timedelta(1), datetime.min.time(
 default_arg = {
     'start_date' : yesterday,
     'email_on_failure' : True,
-    'email_on_retry' : False,
+    'email_on_retry' : True,
     'retries' : 1,
     'retry_delay' : timedelta(minutes=5) # 5 mins delay to retry.
 }
