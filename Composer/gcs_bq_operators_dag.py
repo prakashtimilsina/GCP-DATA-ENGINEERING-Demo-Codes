@@ -15,7 +15,7 @@ default_arg = {
     'email_on_failure' : True,
     'email_on_retry' : True,
     'retries' : 1,
-    'retry_delay' : timedelta(minutes=5) # 5 mins delay to retry.
+    'retry_delay' : timedelta(minutes=15) # 5 mins delay to retry.
 }
 
 
