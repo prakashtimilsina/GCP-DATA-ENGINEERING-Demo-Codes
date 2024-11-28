@@ -21,7 +21,7 @@ default_arg = {
 
 # DAG Definitions
 with DAG(dag_id='GCS_to_BQ_and_AGG',
-         catchup=False,
+         catchup=True,
          schedule_interval = timedelta(days=1),
          default_args=default_arg
         ) as dag:
