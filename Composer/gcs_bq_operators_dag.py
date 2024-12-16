@@ -58,7 +58,7 @@ with DAG(dag_id='GCS_to_BQ_and_AGG',
 
     # Dummy end task
     end=DummyOperator(
-        task_id='end',
+        task_id='endTask',
         dag=dag
     )
 
