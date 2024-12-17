@@ -27,7 +27,7 @@ with DAG(dag_id='GCS_to_BQ_and_AGG',
         ) as dag:
     # Dummy start task
     start = DummyOperator(
-        task_id='start',
+        task_id='startTask',
         dag=dag
     )
 
