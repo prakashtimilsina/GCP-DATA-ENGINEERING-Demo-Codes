@@ -26,13 +26,15 @@ def print_hello():
 # DAG Definition -- This name (dag_id will be displayed in AirFlow UI)
 with DAG( dag_id='bash_python_operator_demo',
          catchup=False,
-         schedule_interval=timedelta(days=1),   # crontab schedule format is also applicable.
+         schedule_interval=timedelta(days=1),
+            schedule= '@daily',  # crontab schedule format is also applicable.
          default_arg=default_arg
         ) as dag:
     
     # Tasks stars here
 
     # Dummy Start Task
+    
     start = DummyOperator(
         task_id='start',
         dag=dag,
