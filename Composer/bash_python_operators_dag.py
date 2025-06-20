@@ -29,6 +29,7 @@ with DAG( dag_id='bash_python_operator_demo',
          schedule_interval=timedelta(days=1),
             schedule= '@daily',  # crontab schedule format is also applicable.
          default_arg=default_arg
+         
         ) as dag:
     
     # Tasks stars here
