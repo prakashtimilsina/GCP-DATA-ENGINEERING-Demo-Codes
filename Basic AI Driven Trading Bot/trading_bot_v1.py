@@ -1,6 +1,12 @@
 import yfinance as yf
 import pandas as pd
 import numpy as np
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from datetime import datetime, timezone
+import pytz
+
 
 ## Multi-Asset Trading Bot Template
 '''
@@ -25,7 +31,12 @@ stop_loss_pct = 0.03 # 5% stop loss
 take_profit_pct = 0.05 # 10% take profit 
 risk_per_trade = 0.02 # 5% risk per trade 
 max_drawdown = 0.15 # 15% max drawdown
+LOG_FILE = "trading_bot.log"
          
+## Email Settings
+GMAIL_USER = 'thaneshwortimalsina43@gmail.com'
+GMAIL_APP_PASSWORD = 'yjmz dlrx mnpx ohkx'
+TO_EMAIL = 'thaneshwortimalsina43@gmail.com'
 
 ## Fetch Market Data
 def fetch_data(symbol, interval='1h', period='60d'):
@@ -96,33 +107,92 @@ def simulate_trades_with_risk(data, initial_balance, risk_per_trade, stop_loss_p
    
     return balance, trade_log
 
+def get_cst_time():
+    utc_now = datetime.now(timezone.utc)
+    cst = pytz.timezone('America/Chicago')  # CST/CDT timezone
+    cst_now = utc_now.astimezone(cst)
+    return cst_now.strftime("%Y-%m-%d %I:%M %p %Z")
+
+## Log and Summarize
+def log_and_summarize(results):
+    now = get_cst_time()
+    lines = [f"=== Trading Bot Run at {now} ===\n"]
+    for ticker, info in results.items():
+        lines.append(f"{ticker}: Final balance = ${info['final_balance']:.2f}, Trades = {len(info['trade_log'])}")
+        for trade in info['trade_log']:
+            lines.append(f"  {trade}")
+        lines.append("")
+    summary = "\n".join(lines)
+    with open(LOG_FILE, "w") as f:
+        f.write(summary)
+    return summary
+
+def send_email(subject, body, gmail_user, gmail_app_password, to_email):
+    msg = MIMEText(body)
+    msg['Subject'] = subject
+    msg['From'] = gmail_user
+    msg['To'] = to_email
+
+    try:
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+            server.login(gmail_user, gmail_app_password)
+            server.sendmail(gmail_user, to_email, msg.as_string())
+        print("Email sent successfully.")
+    except Exception as e:
+        print(f"Error sending email: {e}")
+
 ##  ===== Main Loop Starts =====
+if __name__ == "__main__":
+    results = {} 
 
-results = {} 
+    for ticker in tickers:
+        print(f"\nProcessing {ticker}..")    
+        data = fetch_data(ticker, interval, period)
+        if data.empty or len(data) < 60:
+            print(f"No or insufficient data found for {ticker}....")
+            continue    
+        data = generate_signals(data)
+        #print(f"generate signal: {data}")
+        final_balance, trade_log = simulate_trades_with_risk(data, initial_balance, risk_per_trade, stop_loss_pct, take_profit_pct, max_drawdown)
+        results[ticker] = {'final_balance': final_balance, 'trade_log': trade_log}
+        print(f"Final Balance for {ticker}: {final_balance:.2f}")
+        print(f"Trade Log: {trade_log}")
 
-for ticker in tickers:
-    print(f"\nProcessing {ticker}..")    
-    data = fetch_data(ticker, interval, period)
-    if data.empty or len(data) < 60:
-        print(f"No or insufficient data found for {ticker}....")
-        continue    
-    data = generate_signals(data)
-    print(f"generate signal: {data}")
-    final_balance, trade_log = simulate_trades_with_risk(data, initial_balance, risk_per_trade, stop_loss_pct, take_profit_pct, max_drawdown)
-    results[ticker] = {'final_balance': final_balance, 'trade_log': trade_log}
-    print(f"Final Balance for {ticker}: {final_balance:.2f}")
-    print(f"Trade Log: {trade_log}")
+    # Log and summarize
+    summary = log_and_summarize(results)
 
-# Summary
-print("\n------ Summary ------")
-for ticker, result in results.items():
-    print(f"{ticker}: Final Balance = {result['final_balance']:.2f}, Trades = {len(result['trade_log'])}")
+    # Send email with log
+    send_email(
+        subject="Trading Bot Report",
+        body=summary,
+        gmail_user=GMAIL_USER,
+        gmail_app_password=GMAIL_APP_PASSWORD,
+        to_email=TO_EMAIL
+    )
 
+    # # Summary
+    # print("\n------ Summary ------")
+    # for ticker, result in results.items():
+    #     print(f"{ticker}: Final Balance = {result['final_balance']:.2f}, Trades = {len(result['trade_log'])}")
 
 
+## Setup GCP VM and SSH it.
 
+'''
+create and activate a virtual environment
+    python3 -m venv /home/thaneshwortimalsina43/python_trading_bot/py_envs/tradingbot
+    source /home/thaneshwortimalsina43/python_trading_bot/py_envs/tradingbot/bin/activate
 
+install your python package inside the virtual environment
+    pip install yfinance pandas numpy
 
+run the script inside the virtual environment
+    python ~/trading_bot.py
 
+Optional - schedule with cron using Virtual Environment
+    crontab -e
 
+Add a line like with path:
+    0 * * * * source /home/thaneshwortimalsina43/python_trading_bot/py_envs/tradingbot/bin/activate && python /home/thaneshwortimalsina43/python_trading_bot/trading_bot.py >> /home/thaneshwortimalsina43/python_trading_bot/logs/trading_bot.log 2>&1
 
+'''
