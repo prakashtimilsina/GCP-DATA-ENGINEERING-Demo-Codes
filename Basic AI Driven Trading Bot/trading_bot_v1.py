@@ -114,24 +114,44 @@ def get_cst_time():
     return cst_now.strftime("%Y-%m-%d %I:%M %p %Z")
 
 ## Log and Summarize
-def log_and_summarize(results):
+## Enhancing the email to get tabular results to review as well-formatted email
+def log_and_summarize_html(results):
     now = get_cst_time()
-    lines = [f"=== Trading Bot Run at {now} ===\n"]
+    html = [f"<h2>Trading Bot Run at {now}</h2>"]
     for ticker, info in results.items():
-        lines.append(f"{ticker}: Final balance = ${info['final_balance']:.2f}, Trades = {len(info['trade_log'])}")
-        for trade in info['trade_log']:
-            lines.append(f"  {trade}")
-        lines.append("")
-    summary = "\n".join(lines)
-    with open(LOG_FILE, "w") as f:
-        f.write(summary)
+        html.append(f"<h3>{ticker}: Final balance = ${info['final_balance']:.2f}, Trades = {len(info['trade_log'])}</h3>")
+        if info['trade_log']:
+            html.append("""
+            <table border="1" cellpadding="4" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Time</th>
+                        <th>Price</th>
+                        <th>Position</th>
+                    </tr>
+                </thead>
+            """)
+            for trade in info['trade_log']:
+                action = trade[0]
+                time = trade[1].strftime("%Y-%m-%d %I:%M %p %Z")
+                price = trade[2]
+                position = trade[3] if len(trade) > 3 else ""
+                html.append(f"<tr><td>{action}</td><td>{time}</td><td>${price:.2f}</td><td>{position}</td></tr>")
+            html.append("</table><br>")
+        else:
+            html.append("No trades were executed.<br>")
+    summary = "\n".join(html)
     return summary
 
-def send_email(subject, body, gmail_user, gmail_app_password, to_email):
-    msg = MIMEText(body)
-    msg['Subject'] = subject
+def send_email(subject, html_body, gmail_user, gmail_app_password, to_email):
+    msg = MIMEMultipart('alternative')
     msg['From'] = gmail_user
     msg['To'] = to_email
+    msg['Subject'] = subject
+
+    part = MIMEText(html_body, 'html')
+    msg.attach(part)
 
     try:
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
@@ -159,12 +179,12 @@ if __name__ == "__main__":
         print(f"Trade Log: {trade_log}")
 
     # Log and summarize
-    summary = log_and_summarize(results)
+    summary = log_and_summarize_html(results)
 
     # Send email with log
     send_email(
         subject="Trading Bot Report",
-        body=summary,
+        html_body=summary,
         gmail_user=GMAIL_USER,
         gmail_app_password=GMAIL_APP_PASSWORD,
         to_email=TO_EMAIL
