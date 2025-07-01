@@ -6,6 +6,10 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime, timezone
 import pytz
+import os
+from dotenv import load_dotenv 
+load_dotenv() # loads .env file in current dir or parents.
+
 
 
 ## Multi-Asset Trading Bot Template
@@ -33,10 +37,10 @@ risk_per_trade = 0.02 # 5% risk per trade
 max_drawdown = 0.15 # 15% max drawdown
 LOG_FILE = "trading_bot.log"
          
-## Email Settings
-GMAIL_USER = 'thaneshwortimalsina43@gmail.com'
-GMAIL_APP_PASSWORD = 'yjmz dlrx mnpx ohkx'
-TO_EMAIL = 'thaneshwortimalsina43@gmail.com'
+# Email settings
+GMAIL_USER = os.getenv('GMAIL_USER')
+GMAIL_APP_PASSWORD = os.getenv('GMAIL_APP_PASSWORD')
+TO_EMAIL = os.getenv('TO_EMAIL')
 
 ## Fetch Market Data
 def fetch_data(symbol, interval='1h', period='60d'):
@@ -134,7 +138,7 @@ def log_and_summarize_html(results):
             """)
             for trade in info['trade_log']:
                 action = trade[0]
-                time = trade[1].strftime("%Y-%m-%d %I:%M %p %Z")
+                time = trade[1]
                 price = trade[2]
                 position = trade[3] if len(trade) > 3 else ""
                 html.append(f"<tr><td>{action}</td><td>{time}</td><td>${price:.2f}</td><td>{position}</td></tr>")
@@ -163,22 +167,49 @@ def send_email(subject, html_body, gmail_user, gmail_app_password, to_email):
 
 ##  ===== Main Loop Starts =====
 if __name__ == "__main__":
-    results = {} 
+    # --- For testing HTML email, use hardcoded results. Set to True to test, False for real trading ---
+    TEST_EMAIL_TABLE = False
 
-    for ticker in tickers:
-        print(f"\nProcessing {ticker}..")    
-        data = fetch_data(ticker, interval, period)
-        if data.empty or len(data) < 60:
-            print(f"No or insufficient data found for {ticker}....")
-            continue    
-        data = generate_signals(data)
-        #print(f"generate signal: {data}")
-        final_balance, trade_log = simulate_trades_with_risk(data, initial_balance, risk_per_trade, stop_loss_pct, take_profit_pct, max_drawdown)
-        results[ticker] = {'final_balance': final_balance, 'trade_log': trade_log}
-        print(f"Final Balance for {ticker}: {final_balance:.2f}")
-        print(f"Trade Log: {trade_log}")
+    if TEST_EMAIL_TABLE:
+        results = {
+            "AAPL": {
+                "final_balance": 10500,
+                "trade_log": [
+                    ("BUY", "2025-06-30 09:00", 180.25, 55.43),
+                    ("SELL", "2025-06-30 13:00", 182.10, 55.43),
+                    ("BUY", "2025-06-30 15:00", 181.00, 55.24),
+                    ("SELL", "2025-06-30 19:00", 183.50, 55.24),
+                ]
+            },
+            "BTC-USD": {
+                "final_balance": 11200,
+                "trade_log": [
+                    ("BUY", "2025-06-30 10:00", 65000.00, 0.154),
+                    ("SELL", "2025-06-30 18:00", 66000.00, 0.154),
+                ]
+            },
+            "TSLA": {
+                "final_balance": 9800,
+                "trade_log": []
+            }
+        }
+    else:
+        results = {}
+    
+        for ticker in tickers:
+            print(f"\nProcessing {ticker}..")    
+            data = fetch_data(ticker, interval, period)
+            if data.empty or len(data) < 60:
+                print(f"No or insufficient data found for {ticker}....")
+                continue    
+            data = generate_signals(data)
+            #print(f"generate signal: {data}")
+            final_balance, trade_log = simulate_trades_with_risk(data, initial_balance, risk_per_trade, stop_loss_pct, take_profit_pct, max_drawdown)
+            results[ticker] = {'final_balance': final_balance, 'trade_log': trade_log}
+            print(f"Final Balance for {ticker}: {final_balance:.2f}")
+            print(f"Trade Log: {trade_log}")
 
-    # Log and summarize
+    # Log and summarize in HTML
     summary = log_and_summarize_html(results)
 
     # Send email with log
@@ -189,12 +220,6 @@ if __name__ == "__main__":
         gmail_app_password=GMAIL_APP_PASSWORD,
         to_email=TO_EMAIL
     )
-
-    # # Summary
-    # print("\n------ Summary ------")
-    # for ticker, result in results.items():
-    #     print(f"{ticker}: Final Balance = {result['final_balance']:.2f}, Trades = {len(result['trade_log'])}")
-
 
 ## Setup GCP VM and SSH it.
 
