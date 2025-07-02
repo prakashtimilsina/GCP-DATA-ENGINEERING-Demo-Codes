@@ -24,6 +24,12 @@ Below is a full working script that:
 TICKERS = [
     {'data': 'AAPL',     'order': 'AAPL',    'type': 'stock'},
     {'data': 'TSLA',     'order': 'TSLA',    'type': 'stock'},
+    {'data': 'AMZN',     'order': 'AMZN',    'type': 'stock'},
+    {'data': 'GOOGL',    'order': 'GOOGL',   'type': 'stock'},
+    {'data': 'MSFT',     'order': 'MSFT',    'type': 'stock'},
+    {'data': 'FB',       'order': 'FB',      'type': 'stock'},
+    {'data': 'NFLX',     'order': 'NFLX',    'type': 'stock'},
+    {'data': 'NVDA',     'order': 'NVDA',    'type': 'stock'},
     {'data': 'BTC-USD',  'order': 'BTCUSD',  'type': 'crypto'},
     {'data': 'ETH-USD',  'order': 'ETHUSD',  'type': 'crypto'},
 ]
@@ -214,31 +220,46 @@ def fetch_alpaca_status():
 # ==== EMAIL REPORTING ====
 def log_and_summarize_html(results):
     now = get_cst_time()
-    html = [f"<h2>Trading Bot Run at {now}</h2>"]
+    html = [f"<h6>Trading Bot Run at {now}</h6>"]
+
+    # Table style: green rows for trades, orange for no trades
+    html.append("""
+    <table border="1" cellpadding="4" cellspacing="0" style="border-collapse:collapse;width:100%;">
+        <tr style="background-color: #003366; color: white;">
+            <th>Ticker</th>
+            <th>Final Balance</th>
+            <th>Action</th>
+            <th>Time</th>
+            <th>Price</th>
+            <th>Position</th>
+            <th>Order Response</th>
+        </tr>
+    """)
     for ticker, info in results.items():
-        html.append(f"<h3>{ticker}: Final balance = ${info['final_balance']:.2f}, Trades = {len(info['trade_log'])}</h3>")
-        if info['trade_log']:
-            html.append("""
-            <table border="1" cellpadding="4" cellspacing="0">
-                <tr>
-                    <th>Action</th>
-                    <th>Time</th>
-                    <th>Price</th>
-                    <th>Position</th>
-                    <th>Order Response</th>
-                </tr>
-            """)
-            for trade in info['trade_log']:
+        trades = info['trade_log']
+        if trades:
+            for idx, trade in enumerate(trades):
                 action = trade[0]
                 time = trade[1]
                 price = trade[2]
                 position = trade[3] if len(trade) > 3 else ""
                 order_resp = trade[4] if len(trade) > 4 else ""
-                html.append(f"<tr><td>{action}</td><td>{time}</td><td>{price}</td><td>{position}</td><td>{order_resp}</td></tr>")
-            html.append("</table><br>")
+                # Green background for trade rows
+                html.append(
+                    f"<tr style='background-color:#e7ffe7;'>"
+                    f"{'<td>'+ticker+'</td><td>${:.2f}</td>'.format(info['final_balance']) if idx==0 else '<td></td><td></td>'}"
+                    f"<td>{action}</td><td>{time}</td><td>{price}</td><td>{position}</td><td>{order_resp}</td></tr>"
+                )
         else:
-            html.append("<p>No trades executed.</p>")
+            # Orange background for "no trades" row
+            html.append(
+                f"<tr style='background-color:#fff4e7;'>"
+                f"<td>{ticker}</td><td>${info['final_balance']:.2f}</td>"
+                f"<td colspan='5' align='center'><b>No trades executed</b></td></tr>"
+            )
+    html.append("</table><br><br>")  # Two <br> after the table
     return "\n".join(html)
+
 
 def send_email(subject, html_body, gmail_user, gmail_app_password, to_email):
     msg = MIMEMultipart('alternative')
@@ -287,7 +308,7 @@ if __name__ == "__main__":
     now = get_cst_time()
     html_report = f"""
     <h1>Alpaca Trading Bot Report - {now}</h1>
-    <h2>Trading Bot Simulation (using live cash for sizing)</h2>
+    <h3>Trading Bot Simulation (using live cash for sizing)</h3>
     {log_and_summarize_html(results)}
     <hr>
     <h2>Live Alpaca Paper Account Status</h2>
