@@ -22,17 +22,24 @@ Below is a full working script that:
 
 # ==== CONFIGURATION ====
 TICKERS = [
-    {'data': 'AAPL',     'order': 'AAPL',    'type': 'stock'},
-    {'data': 'TSLA',     'order': 'TSLA',    'type': 'stock'},
-    {'data': 'AMZN',     'order': 'AMZN',    'type': 'stock'},
-    {'data': 'GOOGL',    'order': 'GOOGL',   'type': 'stock'},
-    {'data': 'MSFT',     'order': 'MSFT',    'type': 'stock'},
-    {'data': 'FB',       'order': 'FB',      'type': 'stock'},
-    {'data': 'NFLX',     'order': 'NFLX',    'type': 'stock'},
-    {'data': 'NVDA',     'order': 'NVDA',    'type': 'stock'},
+    # {'data': 'AAPL',     'order': 'AAPL',    'type': 'stock'},
+    # {'data': 'TSLA',     'order': 'TSLA',    'type': 'stock'},
+    # {'data': 'AMZN',     'order': 'AMZN',    'type': 'stock'},
+    # {'data': 'GOOGL',    'order': 'GOOGL',   'type': 'stock'},
+    # {'data': 'MSFT',     'order': 'MSFT',    'type': 'stock'},
+    # {'data': 'NFLX',     'order': 'NFLX',    'type': 'stock'},
+    # {'data': 'NVDA',     'order': 'NVDA',    'type': 'stock'},
     {'data': 'BTC-USD',  'order': 'BTCUSD',  'type': 'crypto'},
     {'data': 'ETH-USD',  'order': 'ETHUSD',  'type': 'crypto'},
-]
+    {'data': 'LTC-USD',  'order': 'LTCUSD',  'type': 'crypto'},
+    {'data': 'XRP-USD',  'order': 'XRPUSD',  'type': 'crypto'},
+    {'data': 'ADA-USD',  'order': 'ADAUSD',  'type': 'crypto'},
+    {'data': 'DOT-USD',  'order': 'DOTUSD',  'type': 'crypto'},
+    {'data': 'DOGE-USD', 'order': 'DOGEUSD', 'type': 'crypto'},
+    {'data': 'SOL-USD',  'order': 'SOLUSD',  'type': 'crypto'},
+    {'data': 'UNI-USD',  'order': 'UNIUSDC', 'type': 'crypto'},
+
+    ]
 YF_INTERVAL = '1h'
 PERIOD = '60d'
 RISK_PER_TRADE = 0.02
@@ -68,13 +75,52 @@ def fetch_data(yf_symbol, yf_interval='1h', period='60d'):
         print(f"Error fetching data for {yf_symbol}: {e}")
         return pd.DataFrame()
 
+# def generate_signals(data):
+#     data['SMA20'] = data['Close'].rolling(window=20).mean()
+#     data['SMA50'] = data['Close'].rolling(window=50).mean()
+#     data['Signal'] = 0
+#     data.loc[data.index[20:], 'Signal'] = np.where(
+#         data['SMA20'][20:] > data['SMA50'][20:], 1, -1
+#     )
+#     data['Position'] = data['Signal'].diff()
+#     return data
+
+## Enhanced Signal Generation Logic
 def generate_signals(data):
+    # Moving Averages
     data['SMA20'] = data['Close'].rolling(window=20).mean()
     data['SMA50'] = data['Close'].rolling(window=50).mean()
+
+    # MACD
+    data['EMA12'] = data['Close'].ewm(span=12, adjust=False).mean()
+    data['EMA26'] = data['Close'].ewm(span=26, adjust=False).mean()
+    data['MACD'] = data['EMA12'] - data['EMA26']
+    data['MACD_signal'] = data['MACD'].ewm(span=9, adjust=False).mean()
+
+    # RSI
+    delta = data['Close'].diff()
+    gain = delta.where(delta > 0, 0)
+    loss = -delta.where(delta < 0, 0)
+    avg_gain = gain.rolling(window=14).mean()
+    avg_loss = loss.rolling(window=14).mean()
+    rs = avg_gain / avg_loss
+    data['RSI'] = 100 - (100 / (1 + rs))
+
+
+    # Example signal logic: combine multiple indicators
     data['Signal'] = 0
-    data.loc[data.index[20:], 'Signal'] = np.where(
-        data['SMA20'][20:] > data['SMA50'][20:], 1, -1
+    buy_condition = (
+        (data['SMA20'] > data['SMA50']) &
+        (data['MACD'] > data['MACD_signal']) &
+        (data['RSI'] > 30) & (data['RSI'] < 60)
     )
+    sell_condition = (
+        (data['SMA20'] < data['SMA50']) &
+        (data['MACD'] < data['MACD_signal']) &
+        (data['RSI'] > 60)
+    )
+    data.loc[buy_condition, 'Signal'] = 1
+    data.loc[sell_condition, 'Signal'] = -1
     data['Position'] = data['Signal'].diff()
     return data
 
@@ -108,6 +154,15 @@ def get_live_cash():
         print(f"Error fetching live cash: {e}")
         return 0.0
 
+def can_sell(symbol, qty):
+    # Check if you have enough settled shares to sell
+    positions = api.list_positions()
+    for pos in positions:
+        if pos.symbol == symbol:
+            if float(pos.qty) >= qty:
+                return True
+    return False      
+    
 def simulate_and_trade(data, order_symbol, asset_type, risk_per_trade, stop_loss_pct, take_profit_pct, max_drawdown):
     # Use live cash from Alpaca for position sizing
     live_cash = get_live_cash()
@@ -122,7 +177,7 @@ def simulate_and_trade(data, order_symbol, asset_type, risk_per_trade, stop_loss
     balance = live_cash
 
     for i in range(1, len(data)):
-        current_price = data['Close'].iloc[i]
+        current_price = float(data['Close'].iloc[i])
         portfolio_value = balance + (position * current_price if position > 0 else 0)
         if portfolio_value > peak_balance:
             peak_balance = portfolio_value
@@ -135,8 +190,8 @@ def simulate_and_trade(data, order_symbol, asset_type, risk_per_trade, stop_loss
         if data['Position'].iloc[i] == 1 and position == 0:
             # Fetch latest cash before sizing
             live_cash = get_live_cash()
-            risk_amount = live_cash * risk_per_trade
-            entry_price = current_price
+            risk_amount = float(live_cash * risk_per_trade)
+            entry_price = float(current_price)
             stop_loss = entry_price * (1 - stop_loss_pct)
             take_profit = entry_price * (1 + take_profit_pct)
             qty = round(risk_amount / entry_price, 6 if asset_type == 'crypto' else 2)
@@ -148,7 +203,7 @@ def simulate_and_trade(data, order_symbol, asset_type, risk_per_trade, stop_loss
                 balance -= risk_amount
 
         # Exit conditions (stop-loss, take-profit, or sell signal)
-        if position > 0:
+        if position > 0 and can_sell(order_symbol, position):
             if current_price <= stop_loss or current_price >= take_profit or data['Position'].iloc[i] == -1:
                 exit_price = current_price
                 order_resp = place_order(order_symbol, position, 'sell', asset_type)
@@ -158,7 +213,7 @@ def simulate_and_trade(data, order_symbol, asset_type, risk_per_trade, stop_loss
                 entry_price = 0
 
     # Liquidate at the end if still holding
-    if position > 0:
+    if position > 0 and can_sell(order_symbol, position):
         final_price = data['Close'].iloc[-1]
         order_resp = place_order(order_symbol, position, 'sell', asset_type)
         balance += position * final_price
