@@ -1,0 +1,62 @@
+<orders>
+  <order>
+    <id>001</id>
+    <customer>
+      <name>John Doe</name>
+      <email>john.doe@example.com</email>
+    </customer>
+    <items>
+      <item><product>Widget A</product><qty>2</qty></item>
+      <item><product>Widget B</product><qty>1</qty></item>
+      <item><product>Widget C</product><qty>5</qty></item>
+      <item><product>Widget D</product><qty>3</qty></item>
+      <item><product>Widget E</product><qty>4</qty></item>
+      <item><product>Widget F</product><qty>6</qty></item>
+      <item><product>Widget G</product><qty>2</qty></item>
+      <item><product>Widget H</product><qty>7</qty></item>
+      <item><product>Widget I</product><qty>1</qty></item>
+      <item><product>Widget J</product><qty>8</qty></item>
+    </items>
+    <notes>Delivered on time. 😊</notes>
+  </order>
+  <order>
+    <id>002</id>
+    <customer>
+      <name>Jane Smith</name>
+      <email>jane.smith@example.com</email>
+    </customer>
+    <items>
+      <item><product>Widget K</product><qty>4</qty></item>
+      <item><product>Widget L</product><qty>3</qty></item>
+      <item><product>Widget M</product><qty>5</qty></item>
+      <item><product>Widget N</product><qty>2</qty></item>
+      <item><product>Widget O</product><qty>7</qty></item>
+      <item><product>Widget P</product><qty>6</qty></item>
+      <item><product>Widget Q</product><qty>1</qty></item>
+      <item><product>Widget R</product><qty>9</qty></item>
+      <item><product>Widget S</product><qty>8</qty></item>
+      <item><product>Widget T</product><qty>2</qty></item>
+    </items>
+    <notes>Delayed. Unexpected char: \u2028</notes>
+  </order>
+  <order>
+    <id>003</id>
+    <customer>
+      <name>Alice Johnson</name>
+      <email>alice.johnson@example.com</email>
+    </customer>
+    <items>
+      <item><product>Widget U</product><qty>2</qty></item>
+      <item><product>Widget V</product><qty>3</qty></item>
+      <item><product>Widget W</product><qty>4</qty></item>
+      <item><product>Widget X</product><qty>5</qty></item>
+      <item><product>Widget Y</product><qty>6</qty></item>
+      <item><product>Widget Z</product><qty>7</qty></item>
+      <item><product>Widget AA</product><qty>8</qty></item>
+      <item><product>Widget AB</product><qty>9</qty></item>
+      <item><product>Widget AC</product><qty>10</qty></item>
+      <item><product>Widget AD</product><qty>1</qty></item>
+    </items>
+    <notes>Shipped. Invalid char: \x92</notes>
+  </order>
+</orders>
