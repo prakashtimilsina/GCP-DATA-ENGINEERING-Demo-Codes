@@ -1,0 +1,179 @@
+<catalog>
+    <book id="bk101">
+        <author>
+            <name>
+                <first>Matthew</first>
+                <last>Gambardella</last>
+            </name>
+        </author>
+        <title>XML Developer's Guide</title>
+        <genre>Computer</genre>
+        <price>49.95</price>
+        <publish_date>2000-10-01</publish_date>
+        <reviewers>
+            <reviewer stars="5">
+                <name>John Doe</name>
+                <comment>An indispensable guide.</comment>
+            </reviewer>
+            <reviewer stars="4">
+                <name>Jane Smith</name>
+                <comment>Very informative.</comment>
+            </reviewer>
+        </reviewers>
+    </book>
+    <book id="bk102">
+        <author>
+            <name>
+                <first>Kim</first>
+                <last>Rälls</last>
+            </name>
+        </author>
+        <title>Midnight Rain</title>
+        <genre>Fantasy</genre>
+        <price>5.95</price>
+        <publish_date>2000-12-16</publish_date>
+        <reviewers>
+            <reviewer stars="3">
+                <name>Peter Jones</name>
+                <comment>A bit slow but good.</comment>
+            </reviewer>
+        </reviewers>
+    </book>
+    <book id="bk103">
+        <author>
+            <name>
+                <first>Corey</first>
+                <last>Sanders</last>
+            </name>
+        </author>
+        <title>The Digital Frontier</title>
+        <genre>Science Fiction</genre>
+        <price>29.99</price>
+        <publish_date>2023-05-20</publish_date>
+        <reviewers>
+            <reviewer stars="5">
+                <name>Alice</name>
+                <comment>A modern classic.
+Highly recommendéd!</comment>
+            </reviewer>
+            <reviewer stars="4">
+                <name>Bob</name>
+                <comment>Thought-provoking and well-paced.</comment>
+            </reviewer>
+            <reviewer stars="5">
+                <name>Charlie</name>
+                <comment>Couldn’t put it down.</comment>
+            </reviewer>
+        </reviewers>
+    </book>
+    <book id="bk104">
+        <author>
+            <name>
+                <first>Eva</first>
+                <last>Novem</last>
+            </name>
+        </author>
+        <title>Whispers in the Dark</title>
+        <genre>Horror</genre>
+        <price>15.50</price>
+        <publish_date>2021-10-31</publish_date>
+        <reviewers/>
+    </book>
+    <book id="bk105">
+        <author>
+            <name>
+                <first>Helen</first>
+                <last>Heart</last>
+            </name>
+        </author>
+        <title>Summer's Embrace</title>
+        <genre>Romance</genre>
+        <price>9.99</price>
+        <publish_date>2024-06-15</publish_date>
+        <reviewers>
+            <reviewer stars="5">
+                <name>David</name>
+                <comment>A perfect beach read! ★★★★★</comment>
+            </reviewer>
+        </reviewers>
+    </book>
+    <book id="bk106">
+        <author>
+            <name>
+                <first>Angela</first>
+                <last>Richards</last>
+            </name>
+        </author>
+        <title>Advanced PySpark</title>
+        <genre>Technical</genre>
+        <price>75.00</price>
+        <publish_date>2025-01-15</publish_date>
+        <reviewers>
+            <reviewer stars="5"><name>Reviewer1</name><comment>Excellent</comment></reviewer>
+            <reviewer stars="4"><name>Reviewer2</name><comment>Helpful</comment></reviewer>
+            <reviewer stars="5"><name>Reviewer3</name><comment>Comprehensive</comment></reviewer>
+            <reviewer stars="4"><name>Reviewer4</name><comment>Well-written</comment></reviewer>
+        </reviewers>
+    </book>
+    <book id="bk107">
+        <author>
+            <name>
+                <first>Frank</first>
+                <last>Herbert</last>
+            </name>
+        </author>
+        <title>Dune</title>
+        <genre>Science Fiction</genre>
+        <price>19.99</price>
+        <publish_date>1965-08-01</publish_date>
+        <reviewers>
+            <reviewer stars="5"><name>Paul</name><comment>A masterpiece.</comment></reviewer>
+            <reviewer stars="4"><name>Jessica</name></reviewer>
+        </reviewers>
+    </book>
+    <book id="bk108">
+        <author>
+            <name>
+                <first>Jane</first>
+                <last>Austen</last>
+            </name>
+        </author>
+        <title>Pride and Prejudice</title>
+        <genre>Classic</genre>
+        <price>12.00</price>
+        <publish_date>1813-01-28</publish_date>
+        <reviewers>
+            <reviewer stars="5"><name>Elizabeth</name><comment>Timeless romance.</comment></reviewer>
+        </reviewers>
+    </book>
+    <book id="bk109">
+        <author>
+            <name>
+                <first>George</first>
+                <last>Orwell</last>
+            </name>
+        </author>
+        <title>1984</title>
+        <genre>Dystopian</genre>
+        <price>14.50</price>
+        <publish_date>1949-06-08</publish_date>
+        <reviewers/>
+    </book>
+    <book id="bk110">
+        <author>
+            <name>
+                <first>J.R.R.</first>
+                <last>Tolkien</last>
+            </name>
+        </author>
+        <title>The Lord of the Rings</title>
+        <genre>Fantasy</genre>
+        <price>35.99</price>
+        <publish_date>1954-07-29</publish_date>
+        <reviewers>
+            <reviewer stars="5"><name>Gandalf</name><comment>A grand adventure.</comment></reviewer>
+            <reviewer stars="4"><name>Frodo</name><comment>Quite the journey.</comment></reviewer>
+            <reviewer stars="5"><name>Aragorn</name><comment>Forth Eorlingas!</comment></reviewer>
+        </reviewers>
+    </book>
+</catalog>
