@@ -8,7 +8,7 @@
         <price>49.95</price>
         <publish_date>2000-10-01</publish_date>
         <reviewers>
-            <reviewer stars="5"><name>John Doe</name><comment>An indispensable guide.</comment></reviewer>
+            <reviewer stars="5"><name>John Doe</name><comment>An indispensable guide for anyone working with XML. The explanations are clear, concise, and the examples are directly applicable to real-world scenarios. I found the chapter on XSLT transformations to be particularly illuminating.</comment></reviewer>
             <reviewer stars="4"><name>Jane Smith</name><comment>Very informative.</comment></reviewer>
         </reviewers>
         <onemorecolumn>
@@ -18,18 +18,6 @@
         <secondcoloum>
             <col1>Second B1</col1>
         </secondcoloum>
-    </book>
-    <book id="bk102">
-        <author>
-            <name><first>Kim</first><last>Rälls</last></name>
-        </author>
-        <title>Midnight Rain</title>
-        <genre>Fantasy</genre>
-        <price>5.95</price>
-        <publish_date>2000-12-16</publish_date>
-        <reviewers>
-            <reviewer stars="3"><name>Peter Jones</name><comment>A bit slow but good.</comment></reviewer>
-        </reviewers>
     </book>
     <book id="bk106">
         <author>
@@ -49,23 +37,62 @@
             <col1>Value C1</col1>
         </onemorecolumn>
     </book>
-    <book id="bk110">
+    <book id="bk111">
         <author>
-            <name><first>J.R.R.</first><last>Tolkien</last></name>
+            <name><first>Walter</first><last>Isaacson</last></name>
         </author>
-        <title>The Lord of the Rings</title>
-        <genre>Fantasy</genre>
-        <price>35.99</price>
-        <publish_date>1954-07-29</publish_date>
+        <title>The Innovators: How a Group of Hackers, Geniuses, and Geeks Created the Digital Revolution</title>
+        <genre>History</genre>
+        <price>21.50</price>
+        <publish_date>2014-09-15</publish_date>
         <reviewers>
-            <reviewer stars="5"><name>Gandalf</name><comment>A grand adventure.</comment></reviewer>
-            <reviewer stars="4"><name>Frodo</name><comment>Quite the journey.</comment></reviewer>
-            <reviewer stars="5"><name>Aragorn</name><comment>Forth Eorlingas!</comment></reviewer>
+            <reviewer stars="5">
+                <name>Ada Lovelace Fan</name>
+                <comment>
+                    This is not just a book; it's an epic saga of the digital age, chronicling the brilliant minds that shaped our modern world. Isaacson weaves together the stories of pioneers from Ada Lovelace to Alan Turing, and from Vannevar Bush to Steve Jobs, with masterful storytelling. 
+
+                    The narrative is compelling, deeply researched, and provides incredible context for the technologies we take for granted today. It emphasizes the critical role of collaboration, showing that innovation is rarely a solo act. A must-read for anyone interested in technology, history, or the nature of creativity itself. It is inspiring and profoundly educational.
+                </comment>
+            </reviewer>
+            <reviewer stars="4"><name>TechieReader</name><comment>A bit dense in places, but overall a fantastic and comprehensive history of computing. Highly recommendéd.</comment></reviewer>
         </reviewers>
         <secondcoloum>
-            <col1>Second D1</col1>
-            <col1>Second D2</col1>
-            <col1>Second D3</col1>
+            <col1>History</col1>
+            <col1>Technology</col1>
+            <col1>Biography</col1>
         </secondcoloum>
+    </book>
+    <book id="bk112">
+        <author>
+            <name><first>Nassim</first><last>Nicholas Taleb</last></name>
+        </author>
+        <title>The Black Swan: The Impact of the Highly Improbable</title>
+        <genre>Philosophy</genre>
+        <price>17.99</price>
+        <publish_date>2007-04-17</publish_date>
+        <reviewers>
+            <reviewer stars="5">
+                <name>Random Walker</name>
+                <comment>
+                    Taleb's work fundamentally changed how I view the world, uncertainty, and the limits of human knowledge. The concept of the "Black Swan"—a high-impact, hard-to-predict, and rare event beyond the realm of normal expectations—is a powerful mental model. 
+                    
+                    The book challenges conventional wisdom and the bell-curve-based models that dominate finance and social sciences. It's witty, arrogant, and brilliant all at once. It's not an easy read, but the intellectual payoff is immense. It forces you to confront the randomness inherent in life and to build robustness against unpredictable shocks. A truly seminal work.
+                </comment>
+            </reviewer>
+        </reviewers>
+        <onemorecolumn>
+            <col1>Probability</col1>
+            <col1>Risk Management</col1>
+        </onemorecolumn>
+    </book>
+    <book id="bk113">
+        <author>
+            <name><first>System</first><last>Administrator</last></name>
+        </author>
+        <title>Log File</title>
+        <genre>Data</genre>
+        <price>0.00</price>
+        <publish_date>2025-08-21</publish_date>
+        <reviewers/>
     </book>
 </catalog>

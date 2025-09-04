@@ -1,0 +1,43 @@
+{
+  "source_xml_path": "/content/books_v2.xml",
+  "target_path": "output_final_tsv",
+  "row_tag": "book",
+  "schema_path": "/content/output.json",
+  "flatten_cols": [
+    { "path": "_id", "alias": "_id" },
+    { "path": "title", "alias": "title" },
+    { "path": "genre", "alias": "genre" },
+    { "path": "price", "alias": "price" },
+    { "path": "publish_date", "alias": "publish_date" },
+    { "path": "author.name.first", "alias": "author_name_first" },
+    { "path": "author.name.last", "alias": "author_name_last" }
+  ],
+  "pivot_arrays": [
+    {
+      "path": "reviewers.reviewer",
+      "alias": "reviewers_array",
+      "pivot_prefix": "reviewer",
+      "max_items": 4,
+      "is_struct": true,
+      "struct_fields": [
+        { "original": "_stars", "new_suffix": "stars" },
+        { "original": "comment", "new_suffix": "comment" },
+        { "original": "name", "new_suffix": "name" }
+      ]
+    },
+    {
+      "path": "onemorecolumn.col1",
+      "alias": "onemorecol_array",
+      "pivot_prefix": "onemorecol",
+      "max_items": 2,
+      "is_struct": false
+    },
+    {
+      "path": "secondcoloum.col1",
+      "alias": "secondcol_arrry",
+      "pivot_prefix": "secondcol",
+      "max_items": 3,
+      "is_struct": false
+    }
+  ]
+}
