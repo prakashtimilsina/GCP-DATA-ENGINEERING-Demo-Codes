@@ -33,7 +33,7 @@ with DAG( dag_id='bash_python_operator_demo',
         ) as dag:
     
     # Tasks stars here
-
+    # Enter the task.
     # Dummy Start Task
     
     start = DummyOperator(
